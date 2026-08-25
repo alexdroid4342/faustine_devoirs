@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Devoirs de Faustine</title>
+<style>
+  :root {
+    --faustine: #ff5ca8;
+    --faustine-bg: rgba(255,92,168,0.16);
+    --ink: #e8e9eb;
+    --muted: #9a9ea5;
+    --surface: #3a3d43;
+    --surface-2: #32353b;
+    --border: #52565d;
+    --card-radius: 20px;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0;
+    font-family: -apple-system, 'Segoe UI', 'DejaVu Sans', Arial, sans-serif;
+    background: linear-gradient(160deg, #5f6368, #34373c 60%);
+    color: var(--ink);
+  }
+  body { padding: 20px 16px 50px; min-height: 100vh; }
+  .wrap { max-width: 720px; margin: 0 auto; }
+
+  .header {
+    background: var(--faustine);
+    border-radius: var(--card-radius);
+    padding: 20px 26px;
+    text-align: center;
+    margin-bottom: 18px;
+    color: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+  }
+  .header h1 { margin: 0 0 4px; font-size: 22px; }
+  .header .sub { font-size: 13px; opacity: 0.92; }
+
+  .stars-row {
+    text-align: center;
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+  .stars-row b { color: #ffd43b; }
+
+  .tabs-row { display: flex; gap: 8px; margin-bottom: 18px; }
+  .tab-btn {
+    flex: 1;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    color: var(--muted);
+    border-radius: 14px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .tab-btn.active { border-color: var(--faustine); color: var(--ink); background: var(--faustine-bg); }
+
+  .card {
+    background: var(--surface);
+    border-radius: var(--card-radius);
+    padding: 22px 24px 26px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.18);
+  }
+
+  .question {
+    font-size: 17px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .listen-btn {
+    background: var(--surface-2);
+    border: 2px solid var(--border);
+    color: var(--ink);
+    border-radius: 50%;
+    width: 38px; height: 38px;
+    font-size: 16px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .listen-btn:active { transform: scale(0.9); }
+  .listen-btn.small { width: 30px; height: 30px; font-size: 13px; }
+
+  /* --- Dénombrement --- */
+  .objects-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 18px 0 22px;
+    font-size: 34px;
+    min-height: 48px;
+  }
+  .objects-grid span { display: inline-block; }
+
+  .choices-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .choice-btn {
+    border: 2.5px solid var(--border);
+    background: var(--surface-2);
+    color: var(--ink);
+    border-radius: 14px;
+    padding: 14px 22px;
+    font-size: 20px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    min-width: 64px;
+    transition: transform .12s ease, background .2s ease, border-color .2s ease;
+  }
+  .choice-btn:active { transform: scale(0.94); }
+  .choice-btn.correct { background: rgba(64,192,87,0.18); border-color: #40c057; }
+  .choice-btn.wrong { background: rgba(250,82,82,0.14); border-color: #fa5252; }
+  .choice-btn[disabled] { cursor: default; }
+
+  /* --- Sons et syllabes --- */
+  .word-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .word-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 2.5px solid var(--border);
+    background: var(--surface-2);
+    color: var(--ink);
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-size: 17px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform .12s ease, background .2s ease, border-color .2s ease;
+  }
+  .word-btn .emoji { font-size: 26px; }
+  .word-btn .label { flex: 1; text-align: left; }
+  .word-btn:active { transform: scale(0.98); }
+  .word-btn.correct { background: rgba(64,192,87,0.18); border-color: #40c057; }
+  .word-btn.wrong { background: rgba(250,82,82,0.14); border-color: #fa5252; }
+  .word-btn[disabled] { cursor: default; }
+
+  .feedback {
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    margin-top: 16px;
+    min-height: 22px;
+  }
+  .feedback.ok { color: #69db7c; }
+  .feedback.ko { color: #ffa8a8; }
+
+  .next-btn {
+    display: block;
+    margin: 16px auto 0;
+    background: var(--faustine);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 11px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    display: none;
+  }
+  .next-btn.show { display: block; }
+
+  .celebration {
+    display: none;
+    text-align: center;
+    background: var(--surface);
+    border: 1px solid #fab005;
+    border-radius: var(--card-radius);
+    padding: 18px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+  .celebration.show { display: block; animation: pop .5s ease; }
+  @keyframes pop { 0% { transform: scale(0.85); opacity:0; } 100% { transform: scale(1); opacity:1; } }
+
+  .note {
+    font-size: 12px;
+    color: #c7cad0;
+    text-align: center;
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <h1>🌸 Devoirs de Faustine</h1>
+    <div class="sub">Petits jeux de dénombrement et de sons</div>
+  </div>
+
+  <div class="celebration" id="celebration">🎉 Bravo Faustine, super série de bonnes réponses ! 🌟</div>
+
+  <div class="stars-row">⭐ <b id="starsCount">0</b> bonne(s) réponse(s) aujourd'hui</div>
+
+  <div class="tabs-row">
+    <button type="button" class="tab-btn active" id="tabDenombrement">🔢 Dénombrement</button>
+    <button type="button" class="tab-btn" id="tabSons">👂 Sons et syllabes</button>
+  </div>
+
+  <div id="viewDenombrement">
+    <div class="card">
+      <div class="question" id="denomQuestion">Combien vois-tu d'objets ?</div>
+      <div class="objects-grid" id="denomObjects"></div>
+      <div class="choices-row" id="denomChoices"></div>
+      <div class="feedback" id="denomFeedback"></div>
+      <button type="button" class="next-btn" id="denomNextBtn">Question suivante ➡️</button>
+    </div>
+  </div>
+
+  <div id="viewSons" style="display:none;">
+    <div class="card">
+      <div class="question" id="sonsQuestion">
+        <span id="sonsQuestionText">Quel mot commence par ce son ?</span>
+        <button type="button" class="listen-btn" id="sonsListenTarget" title="Écouter">🔊</button>
+      </div>
+      <div class="word-choices" id="sonsChoices"></div>
+      <div class="feedback" id="sonsFeedback"></div>
+      <button type="button" class="next-btn" id="sonsNextBtn">Question suivante ➡️</button>
+    </div>
+  </div>
+
+  <div class="note">
+    Ces jeux sont génériques (dénombrement + sons "ch/j" et "s/z", souvent confondus) — dès qu'on connaît le contenu exact de son cahier de devoirs, on pourra l'ajouter ici en plus.
+  </div>
+
+</div>
+
+<script>
+  // ---------- Progress (stars) ----------
+  function todayKey() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+  function loadStars() {
+    try {
+      const raw = localStorage.getItem('faustineDevoirsStars');
+      if (!raw) return { date: todayKey(), count: 0 };
+      const parsed = JSON.parse(raw);
+      if (parsed.date !== todayKey()) return { date: todayKey(), count: 0 };
+      return parsed;
+    } catch (e) { return { date: todayKey(), count: 0 }; }
+  }
+  let starsState = loadStars();
+  function saveStars() {
+    try { localStorage.setItem('faustineDevoirsStars', JSON.stringify(starsState)); } catch (e) {}
+  }
+  function addStar() {
+    starsState.count += 1;
+    saveStars();
+    document.getElementById('starsCount').textContent = starsState.count;
+    if (starsState.count > 0 && starsState.count % 5 === 0) {
+      const cel = document.getElementById('celebration');
+      cel.classList.add('show');
+      setTimeout(() => cel.classList.remove('show'), 2200);
+    }
+  }
+  document.getElementById('starsCount').textContent = starsState.count;
+
+  // ---------- Speech ----------
+  const speechOk = 'speechSynthesis' in window;
+  function speak(text) {
+    if (!speechOk) return;
+    try {
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'fr-FR';
+      u.rate = 0.85;
+      window.speechSynthesis.speak(u);
+    } catch (e) {}
+  }
+  if (!speechOk) {
+    document.getElementById('sonsListenTarget').style.display = 'none';
+  }
+
+  // ---------- Tabs ----------
+  function switchTab(tab) {
+    const btnDenom = document.getElementById('tabDenombrement');
+    const btnSons = document.getElementById('tabSons');
+    const viewDenom = document.getElementById('viewDenombrement');
+    const viewSons = document.getElementById('viewSons');
+    if (tab === 'sons') {
+      btnDenom.classList.remove('active'); btnSons.classList.add('active');
+      viewDenom.style.display = 'none'; viewSons.style.display = 'block';
+    } else {
+      btnSons.classList.remove('active'); btnDenom.classList.add('active');
+      viewSons.style.display = 'none'; viewDenom.style.display = 'block';
+    }
+  }
+  document.getElementById('tabDenombrement').addEventListener('click', () => switchTab('denombrement'));
+  document.getElementById('tabSons').addEventListener('click', () => switchTab('sons'));
+
+  // ---------- Dénombrement ----------
+  const DENOM_OBJECTS = ['🎈','🍎','⭐','🌸','🐟','🦋','🍓','🚗'];
+
+  function newDenomQuestion() {
+    const emoji = DENOM_OBJECTS[Math.floor(Math.random() * DENOM_OBJECTS.length)];
+    const count = 1 + Math.floor(Math.random() * 10); // 1 to 10
+    document.getElementById('denomObjects').innerHTML = Array.from({length: count}, () => `<span>${emoji}</span>`).join('');
+    document.getElementById('denomQuestion').textContent = 'Combien vois-tu d’objets ?';
+
+    const choices = new Set([count]);
+    while (choices.size < 3) {
+      let delta = Math.floor(Math.random() * 3) + 1;
+      if (Math.random() < 0.5) delta = -delta;
+      const candidate = count + delta;
+      if (candidate >= 1 && candidate <= 12) choices.add(candidate);
+    }
+    const shuffled = Array.from(choices).sort(() => Math.random() - 0.5);
+
+    const container = document.getElementById('denomChoices');
+    container.innerHTML = '';
+    shuffled.forEach(n => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'choice-btn';
+      btn.textContent = n;
+      btn.addEventListener('click', () => answerDenom(btn, n, count));
+      container.appendChild(btn);
+    });
+
+    document.getElementById('denomFeedback').textContent = '';
+    document.getElementById('denomFeedback').className = 'feedback';
+    document.getElementById('denomNextBtn').classList.remove('show');
+  }
+
+  function answerDenom(btn, chosen, correct) {
+    const allBtns = document.querySelectorAll('#denomChoices .choice-btn');
+    allBtns.forEach(b => b.disabled = true);
+    const feedback = document.getElementById('denomFeedback');
+    if (chosen === correct) {
+      btn.classList.add('correct');
+      feedback.textContent = 'Bravo, c’est ça ! 🎉';
+      feedback.className = 'feedback ok';
+      addStar();
+    } else {
+      btn.classList.add('wrong');
+      allBtns.forEach(b => { if (parseInt(b.textContent, 10) === correct) b.classList.add('correct'); });
+      feedback.textContent = `Presque ! La bonne réponse était ${correct}.`;
+      feedback.className = 'feedback ko';
+    }
+    document.getElementById('denomNextBtn').classList.add('show');
+  }
+  document.getElementById('denomNextBtn').addEventListener('click', newDenomQuestion);
+
+  // ---------- Sons et syllabes (ciblé ch/j et s/z) ----------
+  // Chaque mot est associé à son "groupe confusable" pour tirer des intrus pertinents.
+  const SOUND_WORDS = [
+    { word: 'chat', emoji: '🐱', sound: 'ch', group: 'ch-j' },
+    { word: 'chien', emoji: '🐶', sound: 'ch', group: 'ch-j' },
+    { word: 'vache', emoji: '🐄', sound: 'ch', group: 'ch-j' },
+    { word: 'chapeau', emoji: '🎩', sound: 'ch', group: 'ch-j' },
+    { word: 'mouche', emoji: '🪰', sound: 'ch', group: 'ch-j' },
+    { word: 'cheval', emoji: '🐴', sound: 'ch', group: 'ch-j' },
+
+    { word: 'jardin', emoji: '🌳', sound: 'j', group: 'ch-j' },
+    { word: 'jupe', emoji: '👗', sound: 'j', group: 'ch-j' },
+    { word: 'pyjama', emoji: '👕', sound: 'j', group: 'ch-j' },
+    { word: 'orange', emoji: '🍊', sound: 'j', group: 'ch-j' },
+    { word: 'nuage', emoji: '☁️', sound: 'j', group: 'ch-j' },
+    { word: 'fromage', emoji: '🧀', sound: 'j', group: 'ch-j' },
+
+    { word: 'soleil', emoji: '☀️', sound: 's', group: 's-z' },
+    { word: 'sac', emoji: '🎒', sound: 's', group: 's-z' },
+    { word: 'souris', emoji: '🐭', sound: 's', group: 's-z' },
+    { word: 'salade', emoji: '🥗', sound: 's', group: 's-z' },
+    { word: 'poisson', emoji: '🐟', sound: 's', group: 's-z' },
+    { word: 'dessert', emoji: '🍰', sound: 's', group: 's-z' },
+
+    { word: 'zèbre', emoji: '🦓', sound: 'z', group: 's-z' },
+    { word: 'maison', emoji: '🏠', sound: 'z', group: 's-z' },
+    { word: 'oiseau', emoji: '🐦', sound: 'z', group: 's-z' },
+    { word: 'fraise', emoji: '🍓', sound: 'z', group: 's-z' },
+    { word: 'cerise', emoji: '🍒', sound: 'z', group: 's-z' },
+    { word: 'vase', emoji: '🏺', sound: 'z', group: 's-z' }
+  ];
+  const SOUND_LABELS = { ch: '« ch » (comme chat)', j: '« j » (comme jardin)', s: '« s » (comme soleil)', z: '« z » (comme zèbre)' };
+
+  function pickRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+  function newSonsQuestion() {
+    const correctWord = pickRandom(SOUND_WORDS);
+    document.getElementById('sonsQuestionText').textContent = `Quel mot contient le son ${SOUND_LABELS[correctWord.sound]} ?`;
+    document.getElementById('sonsListenTarget').onclick = () => speak(`Quel mot contient le son ${correctWord.sound} ?`);
+
+    // Distracteurs : priorité au même groupe confusable (ch/j ou s/z), sons différents
+    const sameGroupOthers = SOUND_WORDS.filter(w => w.group === correctWord.group && w.sound !== correctWord.sound);
+    const otherWords = SOUND_WORDS.filter(w => w.word !== correctWord.word);
+    const distractors = [];
+    const shuffledSameGroup = sameGroupOthers.sort(() => Math.random() - 0.5);
+    for (const w of shuffledSameGroup) {
+      if (distractors.length >= 2) break;
+      distractors.push(w);
+    }
+    while (distractors.length < 2) {
+      const candidate = pickRandom(otherWords);
+      if (candidate.word !== correctWord.word && !distractors.find(d => d.word === candidate.word)) {
+        distractors.push(candidate);
+      }
+    }
+
+    const options = [correctWord, ...distractors].sort(() => Math.random() - 0.5);
+    const container = document.getElementById('sonsChoices');
+    container.innerHTML = '';
+    options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'word-btn';
+      btn.innerHTML = `<span class="emoji">${opt.emoji}</span><span class="label">${opt.word}</span>`;
+      if (speechOk) {
+        const listenBtn = document.createElement('span');
+        listenBtn.className = 'listen-btn small';
+        listenBtn.textContent = '🔊';
+        listenBtn.addEventListener('click', (e) => { e.stopPropagation(); speak(opt.word); });
+        btn.appendChild(listenBtn);
+      }
+      btn.addEventListener('click', () => answerSons(btn, opt, correctWord));
+      container.appendChild(btn);
+    });
+
+    document.getElementById('sonsFeedback').textContent = '';
+    document.getElementById('sonsFeedback').className = 'feedback';
+    document.getElementById('sonsNextBtn').classList.remove('show');
+  }
+
+  function answerSons(btn, chosen, correctWord) {
+    const allBtns = document.querySelectorAll('#sonsChoices .word-btn');
+    allBtns.forEach(b => b.disabled = true);
+    const feedback = document.getElementById('sonsFeedback');
+    if (chosen.word === correctWord.word) {
+      btn.classList.add('correct');
+      feedback.textContent = 'Bravo, c’est ça ! 🎉';
+      feedback.className = 'feedback ok';
+      addStar();
+    } else {
+      btn.classList.add('wrong');
+      allBtns.forEach(b => { if (b.textContent.includes(correctWord.word)) b.classList.add('correct'); });
+      feedback.textContent = `Presque ! Le bon mot était "${correctWord.word}".`;
+      feedback.className = 'feedback ko';
+    }
+    document.getElementById('sonsNextBtn').classList.add('show');
+  }
+  document.getElementById('sonsNextBtn').addEventListener('click', newSonsQuestion);
+
+  // ---------- Init ----------
+  newDenomQuestion();
+  newSonsQuestion();
+</script>
+</body>
+</html>
