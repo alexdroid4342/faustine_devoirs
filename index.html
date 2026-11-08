@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Le nombre du jour — Faustine</title>
-<meta name="theme-color" content="#E0117A">
+<meta name="theme-color" content="#F0EEE6">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -16,10 +16,10 @@
 <style>
 :root{
   color-scheme: light;
-  --paper:#DCDAE0; --ink:#2B2026; --muted:#5E525A;
+  --paper:#F0EEE6; --ink:#2B2026; --muted:#5E525A;
   --rose:#E0117A; --roseL:#A61A58; --vio:#6F43C4; --onRose:#FFF8FC;
   --p1:#FFE1F0; --p2:#EDE3FF; --p3:#D9F2E6; --p4:#FFF0CC;
-  --line:#D9D4DC; --card:#FFFFFF; --glow:#F3C9DF; --ok:#2E7D4F;
+  --line:#DDD8CC; --card:#FFFFFF; --glow:#F3C9DF; --ok:#2E7D4F;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
@@ -64,12 +64,13 @@ button{font-family:inherit;cursor:pointer}
 .center{text-align:center}
 .line3{display:flex;gap:12px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:6px}
 .numbox{display:flex;align-items:center;justify-content:center;min-width:94px;height:84px;
-  border:3px solid var(--line);border-radius:16px;background:var(--p1);font-size:38px;font-weight:700}
+  border:3px solid var(--line);border-radius:16px;background:var(--card);font-size:38px;font-weight:700}
+.numbox.now{border-color:var(--rose)}
 .numbox.q{background:var(--card);border-style:dashed;color:var(--vio)}
 .numbox.set{border-style:solid;border-color:var(--ok);background:var(--p3);color:var(--ok)}
 .cmp{font-size:34px;font-weight:700;color:var(--vio);min-width:40px;text-align:center}
 .opt{font-size:30px;font-weight:700;min-width:84px;padding:14px 10px;border-radius:14px;
-  border:3px solid var(--rose);background:var(--rose);color:var(--onRose)}
+  border:3px solid var(--line);background:var(--card);color:var(--ink)}
 .opt.good{background:var(--ok);border-color:var(--ok);color:#fff}
 .opt.bad{background:var(--rose);border-color:var(--rose);color:var(--onRose)}
 .opt:disabled{opacity:.55}
@@ -80,35 +81,35 @@ button{font-family:inherit;cursor:pointer}
 
 /* matériel base 10 */
 .mat{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;min-height:120px;
-  background:#FFF1F7;border:2px solid var(--line);border-radius:16px;padding:14px;margin-top:12px}
+  background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px;margin-top:12px}
 .bars,.cubes{display:flex;gap:6px;flex-wrap:wrap;align-items:flex-end}
 .barre{width:20px;height:110px;border:2px solid var(--roseL);border-radius:4px;
   background:repeating-linear-gradient(to bottom,var(--p1) 0 9px,var(--roseL) 9px 10px)}
 .cube{width:20px;height:20px;border:2px solid var(--vio);border-radius:4px;background:var(--p2)}
 .ctrls{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
-.ctrls button{font-size:17px;padding:14px 8px;border-radius:14px;border:3px solid var(--rose);background:var(--rose);color:var(--onRose)}
+.ctrls button{font-size:17px;padding:14px 8px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink)}
 .icbtn{display:flex;align-items:center;justify-content:center;gap:10px;min-height:62px}
-.icbtn .sign{font-size:30px;font-weight:700;color:var(--onRose);line-height:1}
-.mini-barre{width:14px;height:40px;border:2px solid #FFF8FC;border-radius:3px;
-  background:repeating-linear-gradient(to bottom,var(--p1) 0 3px,#FFF8FC 3px 4px)}
-.mini-cube{width:22px;height:22px;border:2px solid #FFF8FC;border-radius:4px;background:var(--p1)}
+.icbtn .sign{font-size:30px;font-weight:700;color:var(--roseL);line-height:1}
+.mini-barre{width:14px;height:40px;border:2px solid var(--roseL);border-radius:3px;
+  background:repeating-linear-gradient(to bottom,var(--p1) 0 3px,var(--roseL) 3px 4px)}
+.mini-cube{width:22px;height:22px;border:2px solid var(--vio);border-radius:4px;background:var(--p2)}
 .cnt{font-size:19px;margin-top:10px;color:var(--muted);text-align:center}
 
 /* tableau de numération */
 .tn{display:flex;gap:10px;justify-content:center;margin-top:8px}
 .tncol{flex:1;max-width:150px;text-align:center}
 .tnhead{font-family:'Fredoka',sans-serif;font-weight:600;font-size:26px;
-  color:var(--vio);background:var(--p2);border-radius:10px;padding:5px 2px}
+  color:var(--muted);background:#E8E4D9;border-radius:10px;padding:5px 2px}
 .tnval{height:76px;border:3px dashed var(--line);border-radius:12px;margin-top:8px;
   display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:700;background:var(--card)}
 .tnval.set{border-style:solid;border-color:var(--ok);color:var(--ok)}
 .pad{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:14px}
-.pad button{font-size:24px;font-weight:700;padding:12px 0;border-radius:12px;border:3px solid var(--rose);background:var(--rose);color:var(--onRose)}
+.pad button{font-size:24px;font-weight:700;padding:12px 0;border-radius:12px;border:3px solid var(--line);background:var(--card);color:var(--ink)}
 
 /* ordonner */
 .ordpool{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;justify-content:center}
 .ordpool button{font-size:32px;font-weight:700;min-width:92px;padding:16px 10px;border-radius:16px;
-  border:3px solid var(--rose);background:var(--rose);color:var(--onRose)}
+  border:3px solid var(--line);background:var(--card);color:var(--ink)}
 .ordpool button.taken{background:var(--ok);border-color:var(--ok);color:#fff}
 .ordpool button.shake{animation:sh .3s}
 @keyframes sh{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
@@ -124,7 +125,7 @@ button{font-family:inherit;cursor:pointer}
 
 .pairs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
 .pairs button{font-size:30px;font-weight:700;padding:18px 4px;border-radius:14px;
-  border:3px solid var(--rose);background:var(--rose);color:var(--onRose)}
+  border:3px solid var(--line);background:var(--card);color:var(--ink)}
 .pairs button.sel{border-color:var(--vio);background:var(--vio);color:#fff}
 .pairs button.taken{background:var(--ok);border-color:var(--ok);color:#fff}
 .pairs button.shake{animation:sh .3s}
@@ -244,7 +245,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;padding:20px 16px}
     var card = el("div","card center");
     var line = el("div","line3");
     var before = (N > 0)   ? el("div","numbox q","?") : null;
-    var mid    = el("div","numbox", String(N));
+    var mid    = el("div","numbox now", String(N));
     var after  = (N < 100) ? el("div","numbox q","?") : null;
     if(before) line.appendChild(before);
     line.appendChild(mid);
@@ -370,12 +371,31 @@ footer{color:var(--muted);font-size:13px;text-align:center;padding:20px 16px}
   function comparer(host, done){
     host.appendChild(el("h2",null,"Comparer"));
     host.appendChild(el("p","hint","Plus petit, plus grand, ou pareil ?"));
-    var items = [];
-    for(var r = 0; r < 2; r++){
-      items.push(function(h, next){
-        var m = (Math.random() < 0.2) ? N : Math.max(0, Math.min(100, N + rnd(-15,15)));
-        if(m === N && Math.random() < 0.5) m = Math.max(0, Math.min(100, N + rnd(1,9)));
+
+    // deux relations differentes, compatibles avec N
+    var possibles = [];
+    if(N < 100) possibles.push("<");
+    if(N > 0)   possibles.push(">");
+    possibles.push("=");
+    var rels = shuffle(possibles).slice(0, 2);
+
+    // deux ordres de symboles differents
+    var perms = [], guard = 0;
+    perms.push(shuffle(["<", ">", "="]));
+    while(guard++ < 50){
+      var q = shuffle(["<", ">", "="]);
+      if(q.join("") !== perms[0].join("")){ perms.push(q); break; }
+    }
+    if(perms.length < 2) perms.push(["=", "<", ">"]);
+
+    var items = rels.map(function(rel, i){
+      return function(h, next){
+        var m;
+        if(rel === "=") m = N;
+        else if(rel === "<") m = Math.min(100, N + rnd(1, Math.max(1, Math.min(15, 100 - N))));
+        else m = Math.max(0, N - rnd(1, Math.max(1, Math.min(15, N))));
         var good = N < m ? "<" : (N > m ? ">" : "=");
+
         var card = el("div","card center");
         var line = el("div","line3");
         line.appendChild(el("div","numbox", String(N)));
@@ -383,8 +403,9 @@ footer{color:var(--muted);font-size:13px;text-align:center;padding:20px 16px}
         line.appendChild(sign);
         line.appendChild(el("div","numbox", String(m)));
         card.appendChild(line);
+
         var box = el("div","opts");
-        shuffle(["<", ">", "="]).forEach(function(sym){
+        perms[i].forEach(function(sym){
           var b = el("button","opt", sym);
           b.addEventListener("click", function(){
             if(card.dataset.lock) return;
@@ -400,8 +421,8 @@ footer{color:var(--muted);font-size:13px;text-align:center;padding:20px 16px}
         });
         card.appendChild(box);
         h.appendChild(card);
-      });
-    }
+      };
+    });
     serie(host, items, function(){ finish(host); done(); });
   }
 
@@ -461,17 +482,15 @@ footer{color:var(--muted);font-size:13px;text-align:center;padding:20px 16px}
     host.appendChild(el("h2",null,"Composer et décomposer"));
     host.appendChild(el("p","hint","Touche deux nombres qui font " + N + " ensemble. Il y a 3 paires à trouver."));
 
-    var cands = [];
-    for(var m = 0; m <= N; m += 10) cands.push(m);
-    cands = shuffle(cands);
-    var picks = cands.slice(0, 3), guard = 0;
-    while(picks.length < 3 && guard++ < 300){
-      var a = rnd(0, N);
-      if(picks.indexOf(a) === -1) picks.push(a);
-    }
+    var units = [];
+    for(var u = 1; u <= Math.min(9, N); u++) units.push(u);
+    if(units.length === 0) units = [0];
+    units = shuffle(units);
+    var picks = [];
+    for(var k = 0; k < 3; k++) picks.push(units[k % units.length]);
 
     var tiles = [];
-    picks.forEach(function(a){ tiles.push(a); tiles.push(N - a); });
+    picks.forEach(function(u){ tiles.push(N - u); tiles.push(u); });
     tiles = shuffle(tiles);
 
     var card = el("div","card center");
