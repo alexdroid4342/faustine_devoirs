@@ -4,12 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Le nombre du jour — Faustine</title>
+<meta name="theme-color" content="#E0117A">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Nombre du jour">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Fredoka:wght@500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   color-scheme: light;
   --paper:#DCDAE0; --ink:#2B2026; --muted:#5E525A;
-  --rose:#C9246F; --roseL:#A61A58; --vio:#6F43C4; --onRose:#FFF8FC;
+  --rose:#E0117A; --roseL:#A61A58; --vio:#6F43C4; --onRose:#FFF8FC;
   --p1:#FFE1F0; --p2:#EDE3FF; --p3:#D9F2E6; --p4:#FFF0CC;
   --line:#D9D4DC; --card:#FFFFFF; --glow:#F3C9DF; --ok:#2E7D4F;
   box-sizing:border-box;
@@ -17,8 +25,8 @@
   padding-bottom:env(safe-area-inset-bottom,0px);
 }
 *{box-sizing:border-box}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--paper);color:var(--ink);
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--paper);min-height:100%}
+body{margin:0;min-height:100vh;background:var(--paper);color:var(--ink);
   font-family:'Andika','Trebuchet MS',sans-serif;font-size:17px;line-height:1.5}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--paper);z-index:10}
 .wrap{max-width:720px;margin:0 auto;padding:16px 16px 60px}
@@ -553,6 +561,13 @@ footer{color:var(--muted);font-size:13px;text-align:center;padding:20px 16px}
   $("#go").addEventListener("click", start);
   $("#again").addEventListener("click", start);
 })();
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", function(){
+    navigator.serviceWorker.register("sw.js").catch(function(){});
+  });
+}
 </script>
 </body>
 </html>
