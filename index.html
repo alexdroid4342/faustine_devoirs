@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Le nombre du jour — Faustine</title>
-<meta name="theme-color" content="#E4E3E1">
+<meta name="theme-color" content="#262624">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -16,7 +16,7 @@
 <style>
 :root{
   color-scheme: light;
-  --paper:#E4E3E1; --ink:#2B2026; --muted:#5E525A;
+  --paper:#262624; --ink:#2B2026; --muted:#5E525A;
   --rose:#E0117A; --roseL:#A61A58; --vio:#6F43C4; --onRose:#FFF8FC;
   --p1:#FFE1F0; --p2:#EDE3FF; --p3:#D9F2E6; --p4:#FFF0CC;
   --line:#DDD8CC; --card:#FFFFFF; --glow:#F3C9DF; --ok:#2E7D4F;
@@ -137,6 +137,23 @@ button{font-family:inherit;cursor:pointer}
 .final{text-align:center;padding:26px 16px}
 .final .stars{font-size:40px;letter-spacing:6px}
 footer{color:var(--muted);font-size:13px;text-align:center;padding:20px 16px}
+
+/* textes posés sur le fond sombre */
+h2{color:#FF8FC4}
+.hint{color:#C4A9F5}
+.step{color:#B5AFA8}
+footer{color:#B5AFA8}
+
+/* zones de défi : gris un peu plus clair que le fond */
+.card{background:#34332F;border-color:#47453F;color:#F2EFEA}
+.numbox,.slot,.tnval{color:var(--ink)}
+.cnt{color:#CFC9C2}
+.ends,.arrow{color:#C4A9F5}
+
+/* zone du nombre du jour : orange terre cuite */
+.numcard{background:linear-gradient(140deg,#E08A6A,#D97757);border-color:#B4583A}
+.numcard .lab{color:#5A2A18}
+.numcard .n{color:#2A1710}
 </style>
 </head>
 <body>
@@ -176,7 +193,7 @@ footer{color:var(--muted);font-size:13px;text-align:center;padding:20px 16px}
   </div>
 
 </div>
-<footer>Le nombre du jour — routine mathématique maison. <b>v5</b></footer>
+<footer>Le nombre du jour — routine mathématique maison. <b>v8</b></footer>
 
 <script>
 (function(){

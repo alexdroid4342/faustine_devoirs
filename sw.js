@@ -1,4 +1,4 @@
-const CACHE = "nombre-du-jour-v5";
+const CACHE = "nombre-du-jour-v8";
 const ASSETS = [
   "./",
   "./index.html",
