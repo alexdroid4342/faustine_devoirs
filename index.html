@@ -123,8 +123,8 @@ button{font-family:inherit;cursor:pointer}
 .slot.set{border-style:solid;border-color:var(--ok);background:var(--p3);color:var(--ok)}
 .arrow{flex:0 0 auto;font-size:19px;color:var(--vio)}
 
-.pairs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
-.pairs button{font-size:30px;font-weight:700;padding:18px 4px;border-radius:14px;
+.pairs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:12px}
+.pairs button{font-size:26px;font-weight:700;padding:17px 2px;border-radius:14px;
   border:3px solid var(--line);background:var(--card);color:var(--ink)}
 .pairs button.sel{border-color:var(--vio);background:var(--vio);color:#fff}
 .pairs button.taken{background:var(--ok);border-color:var(--ok);color:#fff}
@@ -149,6 +149,16 @@ footer{color:#B5AFA8}
 .numbox,.slot,.tnval{color:var(--ink)}
 .cnt{color:#CFC9C2}
 .ends,.arrow{color:#C4A9F5}
+
+/* réussite : violet au lieu du vert */
+.opt.good{background:#7A3FC9;border-color:#7A3FC9;color:#FFF}
+.numbox.set,.slot.set,.tnval.set{background:#EDE4FB;border-color:#7A3FC9;color:#5B2A9E}
+.ordpool button.taken,.pairs button.taken{background:#7A3FC9;border-color:#7A3FC9;color:#FFF}
+.done{background:#EDE4FB;border-color:#7A3FC9;color:#3A2235}
+.done b{color:#5B2A9E}
+.found span{background:#EDE4FB;color:#5B2A9E}
+/* tuile sélectionnée en attente de sa paire : terre cuite, pour ne pas confondre */
+.pairs button.sel{background:#D97757;border-color:#B4583A;color:#2A1710}
 
 /* zone du nombre du jour : orange terre cuite */
 .numcard{background:linear-gradient(140deg,#E08A6A,#D97757);border-color:#B4583A}
@@ -193,7 +203,7 @@ footer{color:#B5AFA8}
   </div>
 
 </div>
-<footer>Le nombre du jour — routine mathématique maison. <b>v8</b></footer>
+<footer>Le nombre du jour — routine mathématique maison. <b>v10</b></footer>
 
 <script>
 (function(){
@@ -323,7 +333,7 @@ footer{color:#B5AFA8}
       cnt.textContent = d + (d>1?" barres":" barre") + " et " + u + (u>1?" cubes":" cube") + " = " + (d*10+u);
       if(!locked && d*10+u === N){
         locked = true;
-        cnt.style.color = "var(--ok)";
+        cnt.style.color = "#C4A9F5";
         [].forEach.call(ctrls.children, function(x){ x.disabled = true; });
         setTimeout(function(){ finish(host); done(); }, 400);
       }
@@ -429,7 +439,7 @@ footer{color:#B5AFA8}
             if(sym === good){
               card.dataset.lock = "1";
               b.classList.add("good");
-              sign.textContent = sym; sign.style.color = "var(--ok)";
+              sign.textContent = sym; sign.style.color = "#5B2A9E";
               [].forEach.call(box.children, function(x){ x.disabled = true; });
               setTimeout(next, 450);
             } else { b.classList.add("bad"); b.disabled = true; }
@@ -497,7 +507,7 @@ footer{color:#B5AFA8}
   /* ---------- 6. composer et decomposer ---------- */
   function composer(host, done){
     host.appendChild(el("h2",null,"Composer et décomposer"));
-    host.appendChild(el("p","hint","Touche deux nombres qui font " + N + " ensemble. Il y a 3 paires à trouver."));
+    host.appendChild(el("p","hint","Touche deux nombres qui font " + N + " ensemble. Il y a 3 paires à trouver, et deux nombres en trop."));
 
     var units = [];
     for(var u = 1; u <= Math.min(9, N); u++) units.push(u);
@@ -508,6 +518,13 @@ footer{color:#B5AFA8}
 
     var tiles = [];
     picks.forEach(function(u){ tiles.push(N - u); tiles.push(u); });
+
+    // deux intrus : des unites non utilisees, donc sans partenaire sur le plateau
+    var libres = units.filter(function(v){ return picks.indexOf(v) === -1; });
+    if(libres.length >= 2 && libres[0] + libres[1] !== N){
+      tiles.push(libres[0]);
+      tiles.push(N - libres[1]);
+    }
     tiles = shuffle(tiles);
 
     var card = el("div","card center");
